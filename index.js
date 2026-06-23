@@ -1,43 +1,62 @@
+//@ts-nocheck 
 import { WebSocketServer, WebSocket } from "ws";
 import { createClient } from "redis";
+import express from "express"
+import indexRouter from "./auth/routers/indexRouter.js"
+import signupRouter from "./auth/routers/signupRouter.js"
 
-// createclient() creates a new Redis client instance. We create two clients: one for publishing messages and another for subscribing to messages.
-// default redis connection is localhost:6379, if your redis server is running on a different host or port, you can specify it in the createClient() options.
+//Application Server
+const SERVER_PORT = 3000
 
-const pub = createClient();
-const sub = createClient();
+const app = express()
 
-await pub.connect();
-await sub.connect();
+app.use(express.urlencoded({ extended: true }));
 
-const wss = new WebSocketServer({ port: 8080 });
+app.use(express.json());
 
-await sub.subscribe("chat", (message) => {
-  console.log("From Redis:", message);
+app.use("/", indexRouter)
 
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  });
-});
 
-wss.on("connection", (ws) => {
-  console.log("Client connected");
+const server = app.listen(SERVER_PORT, () =>{
+  console.log(`Server on ${SERVER_PORT}`)
+})
 
-  ws.on("message", async (data) => {
-    const parsed = JSON.parse(data.toString());
+//Redis Clients Publisher and Subscriber
+// const pub = createClient();
+// const sub = createClient();
 
-    // const message = `${parsed.user}: ${parsed.text}`;
-    const message = {
-      user: parsed.user,
-      text: parsed.text,
-      timestamp: new Date().toISOString()
-    };
+// await pub.connect();
+// await sub.connect();
 
-    // Publish to Redis instead of direct broadcast
-    await pub.publish("chat", JSON.stringify(message));
+// const wss = new WebSocketServer({ server: server });
 
-    // await pub.publish("chat", message);
-  });
-});
+// await sub.subscribe("chat", (message) => {
+//   console.log("From Redis:", message);
+
+//   wss.clients.forEach((client) => {
+//     if (client.readyState === WebSocket.OPEN) {
+//       client.send(message);
+//     }
+//   });
+// });
+
+// wss.on("connection", (ws) => {
+//   console.log("Client connected");
+
+//   ws.on("message", async (data) => {
+//     const parsed = JSON.parse(data.toString());
+
+//     // const message = `${parsed.user}: ${parsed.text}`;
+//     const message = {
+//       user: parsed.user,
+//       text: parsed.text,
+//       timestamp: new Date().toISOString()
+//     };
+
+//     // Publish to Redis instead of direct broadcast
+//     await pub.publish("chat", JSON.stringify(message));
+
+//     // await pub.publish("chat", message);
+//   });
+// });
+
