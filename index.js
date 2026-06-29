@@ -10,11 +10,14 @@ const SERVER_PORT = 3000
 
 const app = express()
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json());
 
-app.use("/", indexRouter)
+app.use("/", (req,res,next) => {
+  console.log(req.body)
+  next()
+}, indexRouter)
 
 
 const server = app.listen(SERVER_PORT, () =>{
