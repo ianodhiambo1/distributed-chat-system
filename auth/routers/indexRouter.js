@@ -6,7 +6,7 @@ import loginRouter from "./loginRouter.js"
 const router = Router()
 
 router.get("/", (req,res) => {
-    if(!req.session?.userId){
+    if(!req.cookies?.sessionId){
         return res.redirect("/login")
     }
     res.sendFile( "index.html", {

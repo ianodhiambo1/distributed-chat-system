@@ -14,7 +14,7 @@ export async function loginController(req,res){
           httpOnly: true,
           sameSite: "strict",
         });
-        res.redirect("/")
+        
 
         res.status(201).json({
           message: "User Logged In",
