@@ -1,7 +1,40 @@
 {
   "type": "module",
   "dependencies": {
+    "argon2": "^0.44.0",
+    "body-parser": "^2.3.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0",
     "redis": "^5.12.1",
-    "ws": "^8.20.0"
-  }
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon -L index.js"
+  },
+  "name": "distributed-chat-system",
+  "description": "A collaborative project. Real-time messaging platform",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianodhiambo1/distributed-chat-system.git"
+  },
+  "keywords": [
+    "chat-app"
+  ],
+  "author": "ian&zyiar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianodhiambo1/distributed-chat-system/issues"
+  },
+  "homepage": "https://github.com/ianodhiambo1/distributed-chat-system#readme"
 }

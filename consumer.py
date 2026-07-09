@@ -1,6 +1,16 @@
 import redis
 import json
 import psycopg2
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+db_name = os.getenv("PGDATABASE")
+db_user= os.getenv("PGUSER")
+db_password = os.getenv("PGPASSWORD")
+db_host = os.getenv("PGHOST")
+db_port = os.getenv("PGHOSTPORT")
 
 # Redis connection
 r = redis.Redis(
@@ -9,16 +19,17 @@ r = redis.Redis(
     decode_responses=True
 )
 
+
 pubsub = r.pubsub()
 pubsub.subscribe("chat")
 
 # PostgreSQL connection
 conn = psycopg2.connect(
-    dbname="chatapp",
-    user="chatuser",
-    password="mypassword",
-    host="localhost",
-    port="5432"
+    dbname=db_name,
+    user=db_user,
+    password=db_password,
+    host=db_host,
+    port=db_port
 )
 
 cursor = conn.cursor()
